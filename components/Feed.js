@@ -1,17 +1,17 @@
 import React, { } from 'react';
-import { View } from 'react-native';
-import styles from '../style/styles';
+import { Container } from 'native-base';
+import FHeader from '../components/FHeader';
+import FContent from '../components/FContent';
+import FFooter from '../components/FFooter';
 
-export default function Feed(props) {
-
-    var navigationOptions = {
-        header: null,
-    }
+export default function Feed() {
 
     return (
-        <View style={styles.container}>
-
-        </View>
+        <Container>
+            <FHeader/>
+            <FContent/>
+            <FFooter/>
+        </Container>
     );
 }
 

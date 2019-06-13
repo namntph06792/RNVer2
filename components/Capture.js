@@ -34,9 +34,12 @@ export default function Capture(props) {
     };
 
     useEffect(() => {
-        const { status } = Permissions.askAsync(Permissions.CAMERA);
-        setPermission({status})
-    })
+        (async function(){
+            const { status } = await Permissions.askAsync(Permissions.CAMERA);
+            setPermission(status === 'granted')
+        })();
+    }, [hasCameraPermission])
+
 
     if (hasCameraPermission === null) {
         return <View/>;

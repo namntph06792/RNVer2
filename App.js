@@ -8,6 +8,8 @@ import Feed from "./components/Feed";
 import FeedDetail from "./components/FeedDetail";
 import Admin from "./components/Admin";
 import Post from "./components/Post";
+import { TouchableOpacity, Image, Text } from "react-native";
+import { setRecoveryProps } from "expo/build/ErrorRecovery/ErrorRecovery";
 
 const MainNavigator = createStackNavigator(
   {
@@ -21,6 +23,7 @@ const MainNavigator = createStackNavigator(
       screen: Login,
       navigationOptions: {
         header: null,
+        headerTruncatedBackTitle: 'Logout',
       }
     },
     Capture: {
@@ -38,7 +41,14 @@ const MainNavigator = createStackNavigator(
     Feed: {
       screen: Feed,
       navigationOptions: {
-        header: null,
+        headerTitle: (
+          <Image source={require('./assets/react-native-logo.png')} style={{ width: 30, height: 30 }}/>
+        ),
+        headerRight: (
+          <TouchableOpacity activeOpacity={0.5}>
+            <Image source={require('./assets/hamburger.png')} style={{ width: 25, height: 25, marginRight: 5 }} />
+          </TouchableOpacity>
+        )
       }
     },
     FeedDetail: {

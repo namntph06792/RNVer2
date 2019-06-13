@@ -1,6 +1,5 @@
 import React, { } from 'react';
 import { View, Image, TouchableHighlight } from 'react-native';
-import { Icon } from 'native-base';
 import styles from '../style/styles';
 
 export default function Feed(props) {
@@ -10,7 +9,7 @@ export default function Feed(props) {
     return (
         <View style={styles.container_camera}>
             <TouchableHighlight style={styles.circle_image} underlayColor='#ccc' onPress={() => {navigate('Capture')}}>
-                <Icon style={styles.logo} name='camera'/>
+                <Image source={require("../assets/camera.png")} />
             </TouchableHighlight>
         </View>
     );

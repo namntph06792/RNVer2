@@ -7,7 +7,7 @@ const firebaseConfig = {
     projectId: "react-native-in1611",
     storageBucket: "react-native-in1611.appspot.com",
     messagingSenderId: "349194105025",
-    appId: "1:349194105025:web:8e5fb84bc7e79f03"
+    appId: "1:349194105025:web:477d15927c83779a"
 };
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig);

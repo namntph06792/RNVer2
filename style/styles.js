@@ -11,16 +11,12 @@ export default StyleSheet.create({
         minHeight: 720,
     },
     header: {
-        position: "absolute",
-        left: 0,
-        right: 0,
-        top: 20,
         alignItems: "center",
         justifyContent: "center"
     },
     logo: {
-        width: 128,
-        height: 56,
+        width: 50,
+        height: 50,
         marginTop: 100
     },
     loginInfo: {
@@ -40,7 +36,8 @@ export default StyleSheet.create({
         height: 35,
         width: 25,
         resizeMode: "stretch",
-        alignItems: "center"
+        alignItems: "center",
+        justifyContent: "center"
     },
     input: {
         textAlign: "center",
