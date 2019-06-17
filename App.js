@@ -8,8 +8,7 @@ import Feed from "./components/Feed";
 import FeedDetail from "./components/FeedDetail";
 import Admin from "./components/Admin";
 import Post from "./components/Post";
-import { TouchableOpacity, Image, Text } from "react-native";
-import { setRecoveryProps } from "expo/build/ErrorRecovery/ErrorRecovery";
+import { TouchableOpacity, Image } from "react-native";
 
 const MainNavigator = createStackNavigator(
   {
@@ -59,14 +58,30 @@ const MainNavigator = createStackNavigator(
     },
     Admin: {
       screen: Admin,
-      navigationOptions: {
-        header: null,
-      }
+      navigationOptions: ({ navigate, navigation }) => ({
+        title: 'DashBoard',
+        headerRight: (
+          <TouchableOpacity activeOpacity={0.5} onPress={() => { navigation.navigate("Post") }}>
+            <Image
+              source={require('./assets/plus.png')}
+              style={{ width: 30, height: 30, marginRight: 10 }}
+            />
+          </TouchableOpacity>
+        ),
+      })
     },
     Post: {
       screen: Post,
       navigationOptions: {
-        header: null,
+        title: 'New Post',
+        headerRight: (
+          <TouchableOpacity activeOpacity={0.5}>
+            <Image
+              source={require('./assets/hamburger.png')}
+              style={{ width: 25, height: 25 }}
+            />
+          </TouchableOpacity>
+        ),
       }
     },
   }, {
