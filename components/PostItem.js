@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableHighlight, KeyboardAvoidingView, TouchableWithoutFeedback, TextInput, Keyboard } from 'react-native';
 import Dialog, { DialogFooter, DialogButton, SlideAnimation, DialogTitle, DialogContent } from 'react-native-popup-dialog';
 import { ListItem, Left, Thumbnail, Body, Text, Right, Button  } from "native-base";
@@ -72,9 +72,12 @@ export default function PostItem(props) {
         }
     }
 
+    useEffect(() => {
+        togglePopup();
+    })
     //Common function
-    hidePopup = async() => {
-        await toggleHidden(false);
+    togglePopup = async() => {
+        (isHidden === true) ? await toggleHidden(false) : await toggleHidden(true)
     }
 
     resetState = () => {
@@ -99,12 +102,13 @@ export default function PostItem(props) {
             backgroundColor: 'blue',
             underlayColor: '#8ED1FC',
             onPress: () => {
-                setId(props.dat.id);
-                setTitle(props.dat.title);
-                setContent(props.dat.content);
-                setLike(props.dat.like);
-                setComment(props.dat.comment);
-                () => toggleHidden(true);
+                // setId(props.dat.id);
+                // setTitle(props.dat.title);
+                // setContent(props.dat.content);
+                // setLike(props.dat.like);
+                // setComment(props.dat.comment);
+                // togglePopup();
+                alert('11');
             },
             style: { height: 90 }
         },
@@ -112,7 +116,7 @@ export default function PostItem(props) {
             text: 'Delete',
             backgroundColor: 'red',
             underlayColor: '#8ED1FC',
-            onPress: () => { deleteFirebaseData(props.dat.id) }
+            onPress: () => { this.deleteFirebaseData(props.dat.id) }
         }
     ]
 
@@ -133,7 +137,7 @@ export default function PostItem(props) {
                         </Left>
                         <Body>
                             <Text>{props.dat.title}</Text>
-                            <Text note numberOfLines={1}>{props.dat.content}</Text>
+                            <Text note>{props.dat.content}</Text>
                         </Body>
                         <Right>
                             <Button transparent>
@@ -168,7 +172,7 @@ export default function PostItem(props) {
                     <KeyboardAvoidingView behavior="padding" style={styles.edit_post_container}>
                         <TouchableWithoutFeedback
                             style={styles.edit_post_container}
-                            onPress={() => {Keyboard.dismiss}}>
+                            onPress={Keyboard.dismiss}>
                             <View style={styles.loginInfo}>
                                 <TextInput
                                     style={styles.input}
