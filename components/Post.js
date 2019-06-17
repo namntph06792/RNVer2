@@ -27,17 +27,20 @@ export default function Post(props) {
                 Alert.alert(
                     'Information',
                     'Save data successful !',
-                    [
-                        { 
-                            text: 'OK', 
-                            onPress: () => props.navigation.navigate('Admin') 
-                        }
-                    ]
+                    // [
+                    //     { 
+                    //         text: 'OK', 
+                    //         onPress: () => {
+                    //             props.navigation.navigate('Admin') 
+                    //         }
+                    //     }
+                    // ]
                 );
                 
             }
+            resetState();
         });
-        this.resetState();
+        
     }
 
     //Validate data from input form

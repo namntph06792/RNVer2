@@ -156,11 +156,14 @@ export default StyleSheet.create({
         borderWidth: 1.5,
         borderRadius: 10,
         borderColor: '#d9e3f0',
-        height: 90,
         justifyContent: 'center',
+        marginTop: 5,
+        marginBottom: 5,
     },
-    edit_post_container: {
-        height: 250,
+    post_button: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     //Camera
     container_camera: {

@@ -3,14 +3,15 @@ import { View, TouchableOpacity, FlatList, Text, ActivityIndicator } from 'react
 import styles from '../style/styles';
 import { firebaseApp } from '../components/FirebaseConfig';
 import PostItem from '../components/PostItem';
+import { setRecoveryProps } from 'expo/build/ErrorRecovery/ErrorRecovery';
 
-export default function Admin() {
+export default function Admin(props) {
 
     const [data,setData] = useState([]);
     const [isLoading,toogleData] = useState(true);
  
     useEffect(() => {
-        fetchFirebaseData();
+        this.fetchFirebaseData();
     })
 
     fetchFirebaseData = () => {
@@ -34,7 +35,7 @@ export default function Admin() {
     if(isLoading === true){
         return(
             <View style={styles.listpost_container}>
-                <ActivityIndicator size='small'/>
+                <ActivityIndicator size='large'/>
             </View>
         )
     }else{
@@ -52,7 +53,7 @@ export default function Admin() {
                 <FlatList
                     style={{ flex: 1 }}
                     data={data}
-                    renderItem={({ item }) => <PostItem dat={item} />}
+                    renderItem={({ item }) => <PostItem dat={item}/>}
                     keyExtractor={(item, index) => item.id}
                 />
             </View>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableHighlight, KeyboardAvoidingView, TouchableWithoutFeedback, TextInput, Keyboard } from 'react-native';
-import Dialog, { DialogFooter, DialogButton, SlideAnimation, DialogTitle, DialogContent } from 'react-native-popup-dialog';
+import { View, TouchableHighlight, TextInput, TouchableOpacity } from 'react-native';
 import { ListItem, Left, Thumbnail, Body, Text, Right, Button  } from "native-base";
+import Modal from "react-native-modal";
 import Swipeout from 'react-native-swipeout';
 import styles from '../style/styles';
 import { firebaseApp } from '../components/FirebaseConfig';
@@ -9,7 +9,7 @@ import FlashMessage from "react-native-flash-message";
 
 export default function PostItem(props) {
 
-    const [id,setId] = useState('');
+    const [id, setId] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [like, setLike] = useState('');
@@ -72,12 +72,18 @@ export default function PostItem(props) {
         }
     }
 
-    useEffect(() => {
-        togglePopup();
-    })
     //Common function
-    togglePopup = async() => {
-        (isHidden === true) ? await toggleHidden(false) : await toggleHidden(true)
+    toggleModal = async() => {
+        toggleHidden(!isHidden);
+    }
+
+    setDataToModal = () => {
+        setId(props.dat.id);
+        setTitle(props.dat.title);
+        setContent(props.dat.content);
+        setLike(props.dat.like);
+        setComment(props.dat.comment);
+        toggleModal();
     }
 
     resetState = () => {
@@ -86,32 +92,31 @@ export default function PostItem(props) {
         setContent('');
         setLike('');
         setComment('');
-        toggleHidden(false);
+        toggleModal();
     }
 
     //Config for swipeout
-    const slideAnimation = new SlideAnimation({
-        initialValue: 0, // optional
-        slideFrom: 'bottom', // optional
-        useNativeDriver: true, // optional
-    })
+    // const slideAnimation = new SlideAnimation({
+    //     initialValue: 0, // optional
+    //     slideFrom: 'bottom', // optional
+    //     useNativeDriver: true, // optional
+    // })
 
     let swipeButtonOptions = [
-        {
-            text: 'Edit',
-            backgroundColor: 'blue',
-            underlayColor: '#8ED1FC',
-            onPress: () => {
-                // setId(props.dat.id);
-                // setTitle(props.dat.title);
-                // setContent(props.dat.content);
-                // setLike(props.dat.like);
-                // setComment(props.dat.comment);
-                // togglePopup();
-                alert('11');
-            },
-            style: { height: 90 }
-        },
+        // {
+        //     text: 'Edit',
+        //     backgroundColor: 'blue',
+        //     underlayColor: '#8ED1FC',
+        //     onPress: () => {
+        //         setId(props.dat.id);
+        //         setTitle(props.dat.title);
+        //         setContent(props.dat.content);
+        //         setLike(props.dat.like);
+        //         setComment(props.dat.comment);
+        //         togglePopup();
+        //     },
+        //     style: { height: 90 }
+        // },
         {
             text: 'Delete',
             backgroundColor: 'red',
@@ -128,103 +133,97 @@ export default function PostItem(props) {
                 autoClose={true}
                 backgroundColor='transparent'
                 sensitivity={80}
-                buttonWidth={65}
-            >
+                buttonWidth={65}>
                 <TouchableHighlight underlayColor='#8ED1FC'>
                     <ListItem thumbnail style={styles.post_item}>
                         <Left>
-                            <Thumbnail square source={require('../assets/react-native.png')} />
+                            <Thumbnail square source={require('../assets/react-native.png')} style={{borderWidth: 1, borderColor: 'gray', borderRadius: 10}} />
                         </Left>
                         <Body>
                             <Text>{props.dat.title}</Text>
-                            <Text note>{props.dat.content}</Text>
+                            <Text>{props.dat.content}</Text>
                         </Body>
                         <Right>
-                            <Button transparent>
+                            <Button transparent onPress={this.setDataToModal}>
                                 <Text>View</Text>
                             </Button>
+                            
                         </Right>
                     </ListItem>
                 </TouchableHighlight>
             </Swipeout>
-            <Dialog
-                height={300}
-                visible={isHidden}
-                //onTouchOutside={() => { this.hidePopup() }}
-                dialogTitle={<DialogTitle title='Edit post' />}
-                dialogAnimation={slideAnimation}
-                // footer={
-                //     <DialogFooter>
-                //         <DialogButton
-                //             text="CANCEL"
-                //             bordered
-                //             onPress={() => { this.hidePopup() }}
-                //         />
-                //         <DialogButton
-                //             text="SAVE"
-                //             bordered
-                //             onPress={() => { this.validatePost() }}
-                //         />
-                //     </DialogFooter>
-                // }
+            <Modal 
+                isVisible={isHidden}
+                //onBackdropPress = {this.toggleModal}
+                onSwipeComplete = {this.toggleModal}
+                swipeDirection = 'left'
+                //animationIn = 'slideInUp'
+                //animationInTiming = {500}
+                //animationOut = 'slideInDown'
+                //animationOutTiming = {500}
+                avoidKeyboard = {true}
+                backdropColor = 'black'
+                
             >
-                <DialogContent>
-                    <KeyboardAvoidingView behavior="padding" style={styles.edit_post_container}>
-                        <TouchableWithoutFeedback
-                            style={styles.edit_post_container}
-                            onPress={Keyboard.dismiss}>
-                            <View style={styles.loginInfo}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Title"
-                                    placeholderTextColor="#d9e3f0"
-                                    keyboardType="default"
-                                    returnKeyType="next"
-                                    autoCorrect={false}
-                                    onSubmitEditing={() => this.content.focus()}
-                                    // onChangeText={({title}) => {this.setTitle({title})}}
-                                    value={title}
-                                />
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Content"
-                                    placeholderTextColor="#d9e3f0"
-                                    keyboardType="default"
-                                    returnKeyType="next"
-                                    autoCorrect={false}
-                                    ref={(input) => {this.content = input}}
-                                    onSubmitEditing={() => {this.like.focus()}}
-                                    // onChangeText={({content}) => {this.setContent({content})}}
-                                    value={content}
-                                />
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Like"
-                                    placeholderTextColor="#d9e3f0"
-                                    keyboardType="numbers-and-punctuation"
-                                    returnKeyType="next"
-                                    autoCorrect={false}
-                                    ref={(input) => {this.like = input}}
-                                    onSubmitEditing={() => {this.comment.focus()}}
-                                    // onChangeText={({like}) => {this.setLike({like})}}
-                                    value={like}
-                                />
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Comment"
-                                    placeholderTextColor="#d9e3f0"
-                                    keyboardType="numbers-and-punctuation"
-                                    returnKeyType="go"
-                                    autoCorrect={false}
-                                    ref={(input) => {this.comment = input}}
-                                    // onChangeText={({comment}) => {this.setComment({comment})}}
-                                    value={comment}
-                                />
-                            </View>
-                        </TouchableWithoutFeedback>
-                    </KeyboardAvoidingView>
-                </DialogContent>
-            </Dialog>
+                <View style={{ flex: 0.5, backgroundColor: 'white'}}>
+                    <View style={styles.loginInfo}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Title"
+                            placeholderTextColor="#d9e3f0"
+                            keyboardType="default"
+                            returnKeyType="next"
+                            autoCorrect={false}
+                            onSubmitEditing={() => this.content.focus()}
+                            onChangeText={(title) => { setTitle(title) }}
+                            value={title}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Content"
+                            placeholderTextColor="#d9e3f0"
+                            keyboardType="default"
+                            returnKeyType="next"
+                            autoCorrect={false}
+                            ref={(input) => { this.content = input }}
+                            onSubmitEditing={() => { this.like.focus() }}
+                            onChangeText={(content) => { setContent(content) }}
+                            value={content}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Like"
+                            placeholderTextColor="#d9e3f0"
+                            keyboardType="numbers-and-punctuation"
+                            returnKeyType="next"
+                            autoCorrect={false}
+                            ref={(input) => { this.like = input }}
+                            onSubmitEditing={() => { this.comment.focus() }}
+                            onChangeText={(like) => { setLike(like) }}
+                            value={like}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Comment"
+                            placeholderTextColor="#d9e3f0"
+                            keyboardType="numbers-and-punctuation"
+                            returnKeyType="go"
+                            autoCorrect={false}
+                            ref={(input) => { this.comment = input }}
+                            onChangeText={(comment) => { setComment(comment) }}
+                            value={comment}
+                        />
+                    </View>
+                    <View style={styles.post_button}>
+                        <TouchableOpacity onPress={this.toggleModal}>
+                            <Text>Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => validatePost()}>
+                            <Text>Update</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }

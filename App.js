@@ -86,7 +86,12 @@ const MainNavigator = createStackNavigator(
     },
   }, {
     defaultNavigationOptions: {
-
+      gesturesEnabled: false,
+      swipeEnabled: false,
+      // cardStack: {
+      //   gesturesEnabled: false,
+      //   swipeEnabled: false,
+      // }
     }
   }, {
     mode: 'modal',
